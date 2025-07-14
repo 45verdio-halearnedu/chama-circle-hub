@@ -1,73 +1,117 @@
-# Welcome to your Lovable project
+# Chama Circle Hub
 
-## Project info
+> **Empowering African communities to save, lend, invest, and grow — together.**
 
-**URL**: https://lovable.dev/projects/86a741e5-a0c6-4685-8813-cfcc7f5a3ecc
+---
 
-## How can I edit this code?
+## 🔍 Project Overview
 
-There are several ways of editing your application.
+**Chama Circle Hub** is a powerful community-driven digital finance platform built to modernize how savings groups (commonly known as *chamas* in Africa) operate, manage funds, access loans, and grow wealth collaboratively. It's designed for both individual users and organized groups — with integrated features for **admins**, **banks**, and **investors**.
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/86a741e5-a0c6-4685-8813-cfcc7f5a3ecc) and start prompting.
+## 🌟 Key Features
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🢑 Chama Group System
 
-**Use your preferred IDE**
+* Create or join a chama
+* Role assignments (Chairperson, Treasurer, Secretary)
+* Group chat, voting, and member management
+* Contribution rules, savings rounds, and loan policies
+* Performance tracking & reports
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 💼 Loan & Lending Management
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+* Group and personal loan applications
+* Loan status tracking and history
+* Peer-based lending and voting approval
+* Collateral and interest settings
+* Admin & investor dashboard
 
-Follow these steps:
+### 📊 Analytics & Reporting
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+* Group savings performance
+* Member contributions and repayments
+* Downloadable statements
+* Reputation scores
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 🔐 Authentication & Roles
 
-# Step 3: Install the necessary dependencies.
-npm i
+* Email, phone number, and password-based login
+* Role-based dashboards: Member, Admin, Banker
+* Identity verification via national ID or passport
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+### 🏦 Bank & Admin Portals
+
+* Bank API dashboard (loan marketplace, compliance logs)
+* Admin analytics, loan oversight, messaging center
+* User management and group audits
+* Chama performance monitoring
+
+### 📱 Wallets & Payments
+
+* Group and individual wallets
+* Integration with **M-Pesa**, Airtel Money, Banks
+* QR code payments, deposits, and withdrawals
+* Payment reminders and scheduling
+
+### 📉 Investments & Staking
+
+* Investment opportunities for members
+* Staking of group savings
+* Yield tracking and reward distribution
+
+### 🎓 Community Education
+
+* Financial literacy modules
+* Group challenges and incentives
+* Voting systems for decision-making
+
+---
+
+## 🚜 Tech Stack
+
+| Layer     | Technology                                                    |
+| --------- | ------------------------------------------------------------- |
+| Frontend  | React + TypeScript + Tailwind CSS + shadcn/ui                 |
+| Backend   | [Supabase](https://supabase.com) (PostgreSQL, Auth, Realtime) |
+| Payments  | M-Pesa, Airtel, Bank Integrations                             |
+| Auth      | Supabase Auth (Email, Phone, Social options)                  |
+| Dev Tools | Vite, GitHub, Lovable.dev (optional)                          |
+
+---
+
+## 💡 Vision
+
+Chama Circle Hub envisions a **decentralized future of African community finance** where **transparency, access, and collaboration** empower groups and individuals to build sustainable financial ecosystems.
+
+---
+
+## 🔧 Getting Started
+
+```bash
+# Clone the repository
+https://github.com/45verdio-halearnedu/chama-circle-hub.git
+
+# Install dependencies
+yarn install
+
+# Start development server
+yarn dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## ✨ Contributing
 
-**Use GitHub Codespaces**
+We welcome contributions from the community! Feel free to fork, submit pull requests, or open issues.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## © License
 
-This project is built with:
+This project is licensed under the MIT License.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/86a741e5-a0c6-4685-8813-cfcc7f5a3ecc) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Built with ❤️ by Verdio and the Halearnedu Web Team.
