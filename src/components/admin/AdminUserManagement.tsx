@@ -28,9 +28,9 @@ const AdminUserManagement: React.FC = () => {
   const users = [
     {
       id: '1',
-      name: 'John Kamau',
-      email: 'john.kamau@email.com',
-      phone: '+254701234567',
+      name: 'Joseph Nzai',
+      email: 'joseph.nzai@email.com',
+      phone: '+254705448355',
       status: 'active',
       role: 'user',
       kycStatus: 'verified',

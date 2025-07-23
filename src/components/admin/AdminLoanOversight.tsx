@@ -26,13 +26,13 @@ const AdminLoanOversight: React.FC = () => {
   const loans = [
     {
       id: 'L001',
-      borrowerName: 'John Kamau',
-      chamaName: 'Unity Savings Group',
+      borrowerName: 'Joseph Nzai',
+      chamaName: 'Makini Self Help Group',
       amount: 50000,
       interestRate: 12,
       status: 'active',
       riskLevel: 'low',
-      region: 'Nairobi',
+      region: 'Kilifi',
       disbursedDate: '2024-05-15',
       dueDate: '2024-11-15',
       repaidAmount: 20000,

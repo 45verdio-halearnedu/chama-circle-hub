@@ -27,15 +27,15 @@ const AdminUserDirectory: React.FC = () => {
   const users = [
     {
       id: '1',
-      name: 'John Kamau',
-      email: 'john.kamau@email.com',
-      phone: '+254701234567',
+      name: 'Joseph Nzai',
+      email: 'joseph.nzai@email.com',
+      phone: '+254705448355',
       status: 'active',
       chamasCount: 3,
       totalContributions: 150000,
       creditScore: 785,
       joinDate: '2024-01-15',
-      location: 'Nairobi, Kenya',
+      location: 'Kilifi, Kenya',
       verified: true
     },
     {
@@ -69,12 +69,12 @@ const AdminUserDirectory: React.FC = () => {
   const chamas = [
     {
       id: '1',
-      name: 'Unity Savings Group',
+      name: 'Makini Self Help Group',
       members: 25,
       totalSavings: 2400000,
       status: 'active',
       createdDate: '2024-01-01',
-      region: 'Nairobi',
+      region: 'Kilifi',
       verified: true
     },
     {

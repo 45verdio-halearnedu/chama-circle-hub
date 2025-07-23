@@ -26,8 +26,8 @@ const AdminGroupOversight: React.FC = () => {
   const chamas = [
     {
       id: '1',
-      name: 'Unity Savings Group',
-      admin: 'John Kamau',
+      name: 'Makini Self Help Group',
+      admin: 'Joseph Nzai',
       members: 25,
       maxMembers: 30,
       totalSavings: 2400000,
@@ -35,7 +35,7 @@ const AdminGroupOversight: React.FC = () => {
       contributionFrequency: 'monthly',
       status: 'active',
       verified: true,
-      region: 'Nairobi',
+      region: 'Kilifi',
       createdDate: '2024-01-15',
       creditScore: 825,
       loanActivity: 12,
