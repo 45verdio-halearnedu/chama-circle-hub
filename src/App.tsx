@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> 3cb844b4da99a468447495c39155af6bf62815c9
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-<<<<<<< HEAD
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
@@ -17,6 +12,7 @@ import HorizontalSubNav from "@/components/HorizontalSubNav";
 import Index from "./pages/Index";
 import AuthPage from "./pages/AuthPage";
 import ChamasPage from "./pages/ChamasPage";
+import ChamaDetailPage from "./pages/ChamaDetailPage";
 import CreateChamaPage from "./pages/CreateChamaPage";
 import JoinChamaPage from "./pages/JoinChamaPage";
 import AdvancedChamaPage from "./pages/AdvancedChamaPage";
@@ -35,15 +31,10 @@ import VotingSystemPage from "./pages/VotingSystemPage";
 import FinancialNavigatorPage from "./pages/FinancialNavigatorPage";
 import AdminPortalPage from "./pages/AdminPortalPage";
 import BankPortalPage from "./pages/BankPortalPage";
-=======
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
->>>>>>> 3cb844b4da99a468447495c39155af6bf62815c9
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-<<<<<<< HEAD
 // Sub-navigation configurations
 const getSubNavItems = (pathname: string) => {
   if (pathname.startsWith('/chamas') || pathname === '/create-chama' || pathname === '/join-chama' || pathname === '/advanced-chama') {
@@ -146,6 +137,7 @@ function App() {
                       <Routes>
                         <Route path="/" element={<Index />} />
                         <Route path="/chamas" element={<ChamasPage />} />
+                        <Route path="/chama/:id" element={<ChamaDetailPage />} />
                         <Route path="/create-chama" element={<CreateChamaPage />} />
                         <Route path="/join-chama" element={<JoinChamaPage />} />
                         <Route path="/advanced-chama" element={<AdvancedChamaPage />} />
@@ -177,22 +169,5 @@ function App() {
     </QueryClientProvider>
   );
 }
-=======
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
->>>>>>> 3cb844b4da99a468447495c39155af6bf62815c9
 
 export default App;

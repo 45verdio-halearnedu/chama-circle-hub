@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from 'react-router-dom';
 import CurrencyDisplay from '@/components/CurrencyDisplay';
 import Navigation from '@/components/Navigation';
+import { useChamas, useCreateChama } from '@/hooks/useChamas';
 
 const ChamasPage: React.FC = () => {
   const { toast } = useToast();
@@ -23,33 +24,8 @@ const ChamasPage: React.FC = () => {
     maxMembers: '20'
   });
 
-  // Mock data - will be replaced with actual Supabase queries
-  const myChamas = [
-    {
-      id: '1',
-      name: 'Unity Savings Group',
-      description: 'Monthly savings for business investments',
-      currentMembers: 12,
-      maxMembers: 20,
-      contributionAmount: 5000,
-      contributionFrequency: 'monthly',
-      totalSavings: 240000,
-      role: 'admin',
-      nextContribution: '2024-01-15'
-    },
-    {
-      id: '2',
-      name: 'School Fees Chama',
-      description: 'Saving for children education',
-      currentMembers: 8,
-      maxMembers: 15,
-      contributionAmount: 3000,
-      contributionFrequency: 'monthly',
-      totalSavings: 96000,
-      role: 'member',
-      nextContribution: '2024-01-12'
-    }
-  ];
+  const { data: myChamas, isLoading } = useChamas();
+  const createChamaMutation = useCreateChama();
 
   const handleCreateChama = () => {
     if (!newChama.name || !newChama.contributionAmount) {
@@ -61,9 +37,12 @@ const ChamasPage: React.FC = () => {
       return;
     }
 
-    toast({
-      title: "Chama Created",
-      description: `${newChama.name} has been created successfully`,
+    createChamaMutation.mutate({
+      name: newChama.name,
+      description: newChama.description,
+      contribution_amount: parseInt(newChama.contributionAmount),
+      contribution_frequency: newChama.contributionFrequency,
+      max_members: parseInt(newChama.maxMembers),
     });
 
     setNewChama({
@@ -187,54 +166,93 @@ const ChamasPage: React.FC = () => {
               </Card>
             )}
 
-            <div className="grid gap-4">
-              {myChamas.map((chama) => (
-                <Card key={chama.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="flex items-center gap-2">
-                          {chama.name}
-                          <Badge variant={chama.role === 'admin' ? 'default' : 'secondary'}>
-                            {chama.role}
-                          </Badge>
-                        </CardTitle>
-                        <CardDescription>{chama.description}</CardDescription>
+            {isLoading ? (
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i} className="border-0 shadow-lg">
+                    <CardContent className="p-6">
+                      <div className="animate-pulse space-y-4">
+                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                        <div className="grid grid-cols-4 gap-4">
+                          <div className="h-4 bg-gray-200 rounded"></div>
+                          <div className="h-4 bg-gray-200 rounded"></div>
+                          <div className="h-4 bg-gray-200 rounded"></div>
+                          <div className="h-4 bg-gray-200 rounded"></div>
+                        </div>
                       </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="grid gap-4">
+                {myChamas && myChamas.length > 0 ? (
+                  myChamas.map((chama) => (
+                    <Card key={chama.id} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                      <CardHeader>
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <CardTitle className="flex items-center gap-2">
+                              {chama.name}
+                              <Badge variant="default">
+                                Admin
+                              </Badge>
+                            </CardTitle>
+                            <CardDescription>{chama.description}</CardDescription>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => handleViewDetails(chama.id)}
+                          >
+                            View Details
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div className="flex items-center gap-2">
+                            <Users className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm">
+                              {chama.current_members}/{chama.max_members} members
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <DollarSign className="h-4 w-4 text-muted-foreground" />
+                            <CurrencyDisplay amount={chama.contribution_amount} showToggle={false} className="text-sm" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                            <CurrencyDisplay amount={chama.total_savings || 0} showToggle={false} className="text-sm" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="h-4 w-4 text-muted-foreground" />
+                            <span className="text-sm capitalize">{chama.contribution_frequency}</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <Card className="border-0 shadow-lg">
+                    <CardContent className="p-8 text-center">
+                      <h3 className="text-lg font-medium mb-2">No Chamas Yet</h3>
+                      <p className="text-muted-foreground mb-4">
+                        Create your first chama to start saving with friends and family.
+                      </p>
                       <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleViewDetails(chama.id)}
+                        onClick={() => setShowCreateForm(true)}
+                        className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
                       >
-                        View Details
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create First Chama
                       </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">
-                          {chama.currentMembers}/{chama.maxMembers} members
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <DollarSign className="h-4 w-4 text-muted-foreground" />
-                        <CurrencyDisplay amount={chama.contributionAmount} showToggle={false} className="text-sm" />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                        <CurrencyDisplay amount={chama.totalSavings} showToggle={false} className="text-sm" />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm">Next: {chama.nextContribution}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                  </Card>
+                )}
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="discover" className="space-y-4">
