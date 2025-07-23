@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+<<<<<<< HEAD
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+=======
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+>>>>>>> 3cb844b4da99a468447495c39155af6bf62815c9
 
 @layer base {
   :root {
