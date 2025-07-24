@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,18 +25,31 @@ import AdminDashboard from '@/components/chama/AdminDashboard';
 const AdvancedChamaPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
 
+  // Listen for navigation events from quick actions
+  useEffect(() => {
+    const handleNavigateToTab = (event: CustomEvent) => {
+      setActiveTab(event.detail);
+    };
+
+    window.addEventListener('navigate-to-tab', handleNavigateToTab as EventListener);
+    
+    return () => {
+      window.removeEventListener('navigate-to-tab', handleNavigateToTab as EventListener);
+    };
+  }, []);
+
   // Mock data for the selected chama
   const chamaData = {
     id: '1',
-    name: 'Unity Savings Group',
-    description: 'Monthly savings for business investments and community development',
+    name: 'Student Finance',
+    description: 'Educational funding and financial support for students',
     logo: '/placeholder.svg',
-    totalSavings: 2400000,
-    loansIssued: 850000,
-    totalContributions: 1950000,
-    totalExpenses: 125000,
-    memberCount: 25,
-    activeLoans: 8,
+    totalSavings: 1850000,
+    loansIssued: 650000,
+    totalContributions: 1420000,
+    totalExpenses: 85000,
+    memberCount: 18,
+    activeLoans: 6,
     role: 'admin'
   };
 
@@ -65,7 +78,7 @@ const AdvancedChamaPage: React.FC = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-14 bg-white/50 backdrop-blur-sm mb-6">
+          <TabsList className="grid w-full grid-cols-6 lg:grid-cols-15 bg-white/50 backdrop-blur-sm mb-6">
             <TabsTrigger value="admin-dashboard" className="flex items-center gap-1">
               <LayoutDashboard className="h-3 w-3" />
               <span className="hidden sm:inline">Dashboard</span>
@@ -121,6 +134,10 @@ const AdvancedChamaPage: React.FC = () => {
             <TabsTrigger value="admin" className="flex items-center gap-1">
               <User className="h-3 w-3" />
               <span className="hidden sm:inline">Admin</span>
+            </TabsTrigger>
+            <TabsTrigger value="generate-reports" className="flex items-center gap-1">
+              <FileText className="h-3 w-3" />
+              <span className="hidden sm:inline">Generate Reports</span>
             </TabsTrigger>
           </TabsList>
 
@@ -178,6 +195,10 @@ const AdvancedChamaPage: React.FC = () => {
 
           <TabsContent value="admin">
             <AdminTools chamaData={chamaData} />
+          </TabsContent>
+
+          <TabsContent value="generate-reports">
+            <ReportsStatements chamaData={chamaData} />
           </TabsContent>
         </Tabs>
       </div>

@@ -12,6 +12,7 @@ import { DollarSign, Calendar, TrendingUp, Users, FileText, CheckCircle, Clock, 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import CurrencyDisplay from '@/components/CurrencyDisplay';
 import { useToast } from '@/hooks/use-toast';
+import { useChamaLoans } from '@/hooks/useChamaLoans';
 
 interface LoanManagementProps {
   chamaData: any;
@@ -21,8 +22,19 @@ const LoanManagement: React.FC<LoanManagementProps> = ({ chamaData }) => {
   const [loanAmount, setLoanAmount] = useState('');
   const [loanPurpose, setLoanPurpose] = useState('');
   const [repaymentPeriod, setRepaymentPeriod] = useState('');
-  const [showCalculator, setShowCalculator] = useState(false);
+  const [collateral, setCollateral] = useState('');
   const { toast } = useToast();
+  
+  const { 
+    loans, 
+    isLoading, 
+    applyForLoan, 
+    isApplying,
+    approveLoan,
+    isApproving,
+    rejectLoan,
+    isRejecting
+  } = useChamaLoans(chamaData.id);
 
   // Mock data
   const loanApplications = [
@@ -87,15 +99,18 @@ const LoanManagement: React.FC<LoanManagementProps> = ({ chamaData }) => {
       return;
     }
 
-    toast({
-      title: "Application Submitted! 📋",
-      description: "Your loan application has been submitted for review",
+    applyForLoan({
+      amount: parseFloat(loanAmount),
+      purpose: loanPurpose,
+      repaymentPeriodMonths: parseInt(repaymentPeriod),
+      collateral: collateral || undefined
     });
 
     // Reset form
     setLoanAmount('');
     setLoanPurpose('');
     setRepaymentPeriod('');
+    setCollateral('');
   };
 
   const getStatusBadge = (status: string) => {
@@ -242,9 +257,22 @@ const LoanManagement: React.FC<LoanManagementProps> = ({ chamaData }) => {
                   />
                 </div>
 
-                <Button onClick={handleLoanApplication} className="w-full">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Collateral (Optional)</label>
+                  <Input
+                    placeholder="Describe any collateral you can provide"
+                    value={collateral}
+                    onChange={(e) => setCollateral(e.target.value)}
+                  />
+                </div>
+
+                <Button 
+                  onClick={handleLoanApplication} 
+                  className="w-full"
+                  disabled={isApplying}
+                >
                   <FileText className="h-4 w-4 mr-2" />
-                  Submit Application
+                  {isApplying ? 'Submitting...' : 'Submit Application'}
                 </Button>
               </CardContent>
             </Card>

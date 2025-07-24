@@ -271,19 +271,50 @@ const ChamaOverview: React.FC<ChamaOverviewProps> = ({ chamaData }) => {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-4">
-            <Button className="h-20 flex flex-col items-center justify-center space-y-2">
+            <Button 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => {
+                // Navigate to savings tab with contribution form
+                const event = new CustomEvent('navigate-to-tab', { detail: 'savings' });
+                window.dispatchEvent(event);
+              }}
+            >
               <DollarSign className="h-6 w-6" />
               <span className="text-sm">Make Contribution</span>
             </Button>
-            <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => {
+                // Navigate to loans tab
+                const event = new CustomEvent('navigate-to-tab', { detail: 'loans' });
+                window.dispatchEvent(event);
+              }}
+            >
               <TrendingUp className="h-6 w-6" />
               <span className="text-sm">Request Loan</span>
             </Button>
-            <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => {
+                // Navigate to members tab
+                const event = new CustomEvent('navigate-to-tab', { detail: 'members' });
+                window.dispatchEvent(event);
+              }}
+            >
               <Users className="h-6 w-6" />
               <span className="text-sm">Invite Member</span>
             </Button>
-            <Button variant="outline" className="h-20 flex flex-col items-center justify-center space-y-2">
+            <Button 
+              variant="outline" 
+              className="h-20 flex flex-col items-center justify-center space-y-2"
+              onClick={() => {
+                // Navigate to meetings tab
+                const event = new CustomEvent('navigate-to-tab', { detail: 'meetings' });
+                window.dispatchEvent(event);
+              }}
+            >
               <Calendar className="h-6 w-6" />
               <span className="text-sm">Schedule Meeting</span>
             </Button>

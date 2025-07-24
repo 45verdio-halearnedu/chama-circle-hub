@@ -11,6 +11,7 @@ import { Calendar, Clock, Users, Vote, Video, MapPin, Plus, CheckCircle, XCircle
 import { useGoogleMeet } from '@/hooks/useGoogleMeet';
 import { usePolls } from '@/hooks/usePolls';
 import { useToast } from '@/hooks/use-toast';
+import { useChamaMeetings } from '@/hooks/useChamaMeetings';
 
 interface MeetingsVotingProps {
   chamaData: any;
@@ -20,7 +21,9 @@ const MeetingsVoting: React.FC<MeetingsVotingProps> = ({ chamaData }) => {
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDate, setMeetingDate] = useState('');
   const [meetingTime, setMeetingTime] = useState('');
-  const [meetingType, setMeetingType] = useState('');
+  const [meetingType, setMeetingType] = useState<'physical' | 'virtual' | 'hybrid'>('virtual');
+  const [meetingLocation, setMeetingLocation] = useState('');
+  const [meetingDescription, setMeetingDescription] = useState('');
   const [pollTitle, setPollTitle] = useState('');
   const [pollDescription, setPollDescription] = useState('');
   const [pollDeadline, setPollDeadline] = useState('');
@@ -28,6 +31,15 @@ const MeetingsVoting: React.FC<MeetingsVotingProps> = ({ chamaData }) => {
   const { createMeeting, isCreating } = useGoogleMeet();
   const { polls, createPoll, vote, loading } = usePolls(chamaData.id);
   const { toast } = useToast();
+  
+  const {
+    meetings,
+    isLoading: meetingsLoading,
+    scheduleMeeting,
+    isScheduling,
+    updateAttendance,
+    isUpdatingAttendance
+  } = useChamaMeetings(chamaData.id);
 
   // Mock data for meetings
   const upcomingMeetings = [
@@ -83,7 +95,7 @@ const MeetingsVoting: React.FC<MeetingsVotingProps> = ({ chamaData }) => {
   ];
 
   const handleCreateMeeting = async () => {
-    if (!meetingTitle || !meetingDate || !meetingTime || !meetingType) {
+    if (!meetingTitle || !meetingDate || !meetingTime) {
       toast({
         title: "Incomplete Information",
         description: "Please fill in all meeting details",
@@ -92,20 +104,43 @@ const MeetingsVoting: React.FC<MeetingsVotingProps> = ({ chamaData }) => {
       return;
     }
 
-    const meetingDateTime = `${meetingDate}T${meetingTime}:00`;
-    const meetLink = await createMeeting(meetingTitle, meetingDateTime, 120); // 2 hours duration
-
-    if (meetLink) {
-      toast({
-        title: "Meeting Scheduled! 📅",
-        description: `${meetingTitle} has been scheduled with Google Meet link created`,
+    try {
+      const scheduledDate = new Date(`${meetingDate}T${meetingTime}`).toISOString();
+      
+      // Schedule the meeting in the backend
+      scheduleMeeting({
+        title: meetingTitle,
+        description: meetingDescription,
+        scheduledDate,
+        meetingType,
+        location: meetingLocation || undefined
       });
+      
+      // Also create Google Meet if virtual
+      if (meetingType === 'virtual' || meetingType === 'hybrid') {
+        try {
+          const meetLink = await createMeeting(meetingTitle, scheduledDate, 120); // 2 hours duration
+          
+          if (meetLink) {
+            toast({
+              title: "Meeting Scheduled! 📅",
+              description: `${meetingTitle} has been scheduled with Google Meet link created`,
+            });
+          }
+        } catch (error) {
+          console.error('Failed to create Google Meet:', error);
+        }
+      }
       
       // Reset form
       setMeetingTitle('');
       setMeetingDate('');
       setMeetingTime('');
-      setMeetingType('');
+      setMeetingType('virtual');
+      setMeetingLocation('');
+      setMeetingDescription('');
+    } catch (error) {
+      console.error('Failed to schedule meeting:', error);
     }
   };
 
@@ -287,22 +322,45 @@ const MeetingsVoting: React.FC<MeetingsVotingProps> = ({ chamaData }) => {
 
               <div className="space-y-2">
                 <label className="text-sm font-medium">Meeting Type</label>
-                <Select value={meetingType} onValueChange={setMeetingType}>
+                <Select value={meetingType} onValueChange={(value) => setMeetingType(value as 'physical' | 'virtual' | 'hybrid')}>
                   <SelectTrigger>
                     <SelectValue placeholder="Select meeting type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="general">General Meeting</SelectItem>
-                    <SelectItem value="committee">Committee Meeting</SelectItem>
-                    <SelectItem value="special">Special Meeting</SelectItem>
-                    <SelectItem value="emergency">Emergency Meeting</SelectItem>
+                    <SelectItem value="virtual">Virtual Meeting</SelectItem>
+                    <SelectItem value="physical">Physical Meeting</SelectItem>
+                    <SelectItem value="hybrid">Hybrid Meeting</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <Button onClick={handleCreateMeeting} className="w-full" disabled={isCreating}>
-                {isCreating ? (
-                  <>Creating Meeting...</>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Description (Optional)</label>
+                <Textarea
+                  placeholder="Meeting agenda or description"
+                  value={meetingDescription}
+                  onChange={(e) => setMeetingDescription(e.target.value)}
+                />
+              </div>
+
+              {(meetingType === 'physical' || meetingType === 'hybrid') && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Location</label>
+                  <Input
+                    placeholder="Meeting location"
+                    value={meetingLocation}
+                    onChange={(e) => setMeetingLocation(e.target.value)}
+                  />
+                </div>
+              )}
+
+              <Button 
+                onClick={handleCreateMeeting} 
+                className="w-full" 
+                disabled={isCreating || isScheduling}
+              >
+                {isCreating || isScheduling ? (
+                  <>Scheduling Meeting...</>
                 ) : (
                   <>
                     <Plus className="h-4 w-4 mr-2" />
