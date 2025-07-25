@@ -9,7 +9,7 @@ import {
   PiggyBank, Smartphone, Award, BarChart3, 
   Building2, Shield, ChevronLeft, ChevronRight,
   CreditCard, Target, HandCoins, Gamepad2,
-  BookOpen, Settings, LogOut, Menu
+  BookOpen, Settings, LogOut, Menu, Handshake
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
@@ -88,6 +88,13 @@ const VerticalNavigation = () => {
         { title: 'Voting System', path: '/voting-system' },
         { title: 'Financial Navigator', path: '/financial-navigator' },
       ]
+    },
+    {
+      title: 'Partner Dashboard',
+      icon: Handshake,
+      path: '/partner-dashboard',
+      badge: 'Partner',
+      requiresAuth: true,
     },
     {
       title: 'Admin Portal',

@@ -31,15 +31,18 @@ import VotingSystemPage from "./pages/VotingSystemPage";
 import FinancialNavigatorPage from "./pages/FinancialNavigatorPage";
 import AdminPortalPage from "./pages/AdminPortalPage";
 import BankPortalPage from "./pages/BankPortalPage";
+import AvailableChamasPage from "./pages/AvailableChamasPage";
+import PartnerDashboardPage from "./pages/PartnerDashboardPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
 // Sub-navigation configurations
 const getSubNavItems = (pathname: string) => {
-  if (pathname.startsWith('/chamas') || pathname === '/create-chama' || pathname === '/join-chama' || pathname === '/advanced-chama') {
+  if (pathname.startsWith('/chamas') || pathname === '/create-chama' || pathname === '/join-chama' || pathname === '/advanced-chama' || pathname === '/available-chamas') {
     return [
       { title: 'My Chamas', path: '/chamas', description: 'View and manage your chamas' },
+      { title: 'Available Chamas', path: '/available-chamas', badge: 'New', description: 'Browse and join chamas' },
       { title: 'Create Chama', path: '/create-chama', description: 'Start a new chama' },
       { title: 'Join Chama', path: '/join-chama', description: 'Join an existing chama' },
       { title: 'Advanced Features', path: '/advanced-chama', badge: 'Pro', description: 'Advanced chama management' },
@@ -137,10 +140,12 @@ function App() {
                       <Routes>
                         <Route path="/" element={<Index />} />
                         <Route path="/chamas" element={<ChamasPage />} />
+                        <Route path="/available-chamas" element={<AvailableChamasPage />} />
                         <Route path="/chama/:id" element={<ChamaDetailPage />} />
                         <Route path="/create-chama" element={<CreateChamaPage />} />
                         <Route path="/join-chama" element={<JoinChamaPage />} />
                         <Route path="/advanced-chama" element={<AdvancedChamaPage />} />
+                        <Route path="/partner-dashboard" element={<PartnerDashboardPage />} />
                         <Route path="/investment" element={<InvestmentPage />} />
                         <Route path="/staking" element={<StakingPage />} />
                         <Route path="/p2p-trading" element={<P2PTradingPage />} />

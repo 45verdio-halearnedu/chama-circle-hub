@@ -85,8 +85,9 @@ const ChamasPage: React.FC = () => {
         </div>
 
         <Tabs defaultValue="my-chamas" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white/50 backdrop-blur-sm">
+          <TabsList className="grid w-full grid-cols-4 bg-white/50 backdrop-blur-sm">
             <TabsTrigger value="my-chamas">My Chamas</TabsTrigger>
+            <TabsTrigger value="available">Available Chamas</TabsTrigger>
             <TabsTrigger value="discover">Discover</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
@@ -253,6 +254,31 @@ const ChamasPage: React.FC = () => {
                 )}
               </div>
             )}
+          </TabsContent>
+
+          <TabsContent value="available" className="space-y-4">
+            <Card className="border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle>Available Chamas</CardTitle>
+                <CardDescription>
+                  Browse and join chamas that match your interests and financial goals
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center py-8">
+                  <h3 className="text-lg font-medium mb-2">Discover Perfect Chamas for You</h3>
+                  <p className="text-muted-foreground mb-4">
+                    From 5-member starter groups to 50-member business networks, find the right fit for your savings journey.
+                  </p>
+                  <Button 
+                    onClick={() => navigate('/available-chamas')}
+                    className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700"
+                  >
+                    Browse Available Chamas
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="discover" className="space-y-4">
